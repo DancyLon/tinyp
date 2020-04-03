@@ -9,6 +9,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 configurations {
+	compile
 	developmentOnly
 	runtimeClasspath {
 		extendsFrom developmentOnly
@@ -26,12 +27,15 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '2.2.6.RELEASE'
+	compile group: 'org.springframework', name: 'spring-web', version: '5.2.5.RELEASE'
+
 }
 
 test {
 	useJUnitPlatform()
 }
 task copyJars(type:Copy){
-	from configurations.developmentOnly
+	from configurations.runtime
 	into 'libs'
 }
