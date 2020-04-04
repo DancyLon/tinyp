@@ -9,7 +9,7 @@ public class CommonUtls {
     public static String getNumberVerrify(int i) {
         StringBuilder sb = new StringBuilder(i);
         while(i-- > 0){
-            sb.append(Math.floor(Math.random()*10));
+            sb.append((int)Math.floor(Math.random()*10));
         }
         return sb.toString();
     }
