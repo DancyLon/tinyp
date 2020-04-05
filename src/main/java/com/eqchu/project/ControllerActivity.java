@@ -1,8 +1,8 @@
 package com.eqchu.project;
 import java.util.*;
-
 import com.alibaba.fastjson.JSON;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
@@ -19,6 +19,15 @@ public class ControllerActivity implements ResponseBodyAdvice<Object> {
 
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+        //解决跨域问题
+        serverHttpResponse.getHeaders().setAccessControlAllowOrigin("*");
+        serverHttpResponse.getHeaders().setAccessControlAllowCredentials(true);
+        serverHttpResponse.getHeaders().setAccessControlAllowMethods(
+                Arrays.asList(HttpMethod.POST,HttpMethod.GET,
+                HttpMethod.PATCH,HttpMethod.DELETE,HttpMethod.PUT));
+        serverHttpResponse.getHeaders().setAccessControlMaxAge(3600);
+        serverHttpResponse.getHeaders().setAccessControlAllowHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept"));
+
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("status",200);
         if(o instanceof String || o instanceof Collection){
@@ -27,7 +36,6 @@ public class ControllerActivity implements ResponseBodyAdvice<Object> {
             map.put("data",new HashMap());
         }
         map.put("desc","请求成功");
-//        map.put();
         return JSON.toJSONString(map);
     }
 }
