@@ -14,11 +14,11 @@ public class LoginService {
     private Http http;
 
     //获取短信验证码
-    public Object getMsgVerify(String phoneNumb) {
+    public String getMsgVerify(String phoneNumb) {
         String randomVerify = CommonUtls.getNumberVerrify(6);
         System.out.println("random verify:"+randomVerify);
         Map<String,Object> paras = null;
-        Object response = null;
+        String response = null;
         String url = null;
         try {
             url = TencentUtils.getMsgVerifyURL(phoneNumb,randomVerify);
@@ -27,7 +27,6 @@ public class LoginService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return response;
     }
 }

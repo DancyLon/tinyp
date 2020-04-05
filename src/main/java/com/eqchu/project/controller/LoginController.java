@@ -23,7 +23,8 @@ public class LoginController {
     @RequestMapping(value = "/msg/verify",method = RequestMethod.GET)
     public Object getMsgVerify(
             @RequestParam(value = "phoneNumb") String phoneNumb){
-        return service.getMsgVerify(phoneNumb);
+        String re = service.getMsgVerify(phoneNumb);
+        return re;
     }
 
     @RequestMapping(value = "/test")
