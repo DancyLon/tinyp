@@ -13,6 +13,9 @@ public class LoginService {
     @Autowired
     private Http http;
 
+    //缓存客户信息
+    private Map<String,Map<String,Object>> userInfo = new HashMap();
+
     //获取短信验证码
     public String getMsgVerify(String phoneNumb) {
         String randomVerify = CommonUtls.getNumberVerrify(6);
@@ -24,9 +27,28 @@ public class LoginService {
             url = TencentUtils.getMsgVerifyURL(phoneNumb,randomVerify);
             System.out.println("url="+url);
             response = http.getMsgVerify(url);
+            if ("ok" == response) {
+                Map<String,Object> map = null;
+                if (userInfo.get(phoneNumb) == null) {
+                    map = new HashMap();
+                    userInfo.put(phoneNumb,map);
+                }else{
+                    map = userInfo.get(phoneNumb);
+                }
+                map.put("verify",randomVerify);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return response;
+    }
+
+    //手机号快速登陆
+    public boolean loginByPhoneNumber(String phoneNumber, String verify) {
+        if (userInfo.get(phoneNumber) == null || userInfo.get(phoneNumber).get("verify") == null
+            || !userInfo.get(phoneNumber).get("verify").equals(verify)) {
+            return false;
+        }else
+            return true;
     }
 }

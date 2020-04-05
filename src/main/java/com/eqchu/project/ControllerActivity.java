@@ -29,13 +29,11 @@ public class ControllerActivity implements ResponseBodyAdvice<Object> {
         serverHttpResponse.getHeaders().setAccessControlAllowHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept"));
 
         Map<String,Object> map = new HashMap<String,Object>();
-        map.put("status",200);
         if(o instanceof String || o instanceof Collection){
             map.put("data",o);
         } else {
             map.put("data",new HashMap());
         }
-        map.put("desc","请求成功");
         return JSON.toJSONString(map);
     }
 }

@@ -1,5 +1,5 @@
 package com.eqchu.project.controller;
-
+import java.util.*;
 import com.eqchu.project.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +25,25 @@ public class LoginController {
             @RequestParam(value = "phoneNumb") String phoneNumb){
         String re = service.getMsgVerify(phoneNumb);
         return re;
+    }
+
+    /**
+     * 用手机号快速登陆
+     * @param phoneNumber
+     * @param verify
+     * */
+    @RequestMapping(value = "/by/phoneNumber",method = RequestMethod.GET)
+    public Object loginByPhoneNumber(@RequestParam String phoneNumber,
+                                     @RequestParam String verify){
+        Map<String,String> map = new HashMap();
+        if (service.loginByPhoneNumber(phoneNumber,verify)) {
+            map.put("status","ok");
+            map.put("msg","登陆成功");
+        } else{
+            map.put("status","fail");
+            map.put("msg","登陆失败，验证码不正确");
+        }
+        return map;
     }
 
     @RequestMapping(value = "/test")
