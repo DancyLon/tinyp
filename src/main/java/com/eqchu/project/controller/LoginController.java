@@ -18,16 +18,16 @@ public class LoginController {
 
     /**
      * 登陆时获取短信验证码
-     * @param phoneNumb
+     * @param phoneNumber
      * */
     @RequestMapping(value = "/msg/verify",method = RequestMethod.GET)
     public Object getMsgVerify(
-            @RequestParam(value = "phoneNumb") String phoneNumb){
-        String re = service.getMsgVerify(phoneNumb);
+            @RequestParam String phoneNumber){
+        String re = service.getMsgVerify(phoneNumber);
         return re;
     }
 
-    /**
+    /**s
      * 用手机号快速登陆
      * @param phoneNumber
      * @param verify
