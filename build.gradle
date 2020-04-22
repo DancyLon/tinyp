@@ -32,6 +32,7 @@ dependencies {
 	compile group: 'org.springframework', name: 'spring-webmvc', version: '5.2.5.RELEASE'
 	compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.12.3'
 	compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0.rc1'
 }
 
 test {

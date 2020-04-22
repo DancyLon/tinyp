@@ -1,7 +1,7 @@
 package com.eqchu.project.service;
 
 import com.eqchu.project.httpRequest.Http;
-import com.eqchu.project.utils.CommonUtls;
+import com.eqchu.project.utils.CommonUtils;
 import com.eqchu.project.utils.TencentUtils;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class LoginService {
 
     //获取短信验证码
     public String getMsgVerify(String phoneNumb) {
-        String randomVerify = CommonUtls.getNumberVerrify(6);
+        String randomVerify = CommonUtils.getNumberVerrify(6);
         logger.info("random verify:"+randomVerify);
         Map<String,Object> paras = null;
         String response = null;
@@ -60,7 +60,7 @@ public class LoginService {
         }else{
             Query query = new Query(Criteria.where("phone_number").is(phoneNumber));
             Document one = mongo.findOne(query, Document.class,"web_users");
-            String nowString = CommonUtls.getNowTimeFormat("yyyy-MM-dd HH:mm:ss");
+            String nowString = CommonUtils.getNowTimeFormat("yyyy-MM-dd HH:mm:ss");
             if (one == null) {
                 one = new Document();
                 one.append("phone_number",phoneNumber).append("join_time",nowString)

@@ -1,6 +1,6 @@
 package com.eqchu.project.config;
-import java.util.*;
-import com.alibaba.fastjson.JSON;
+
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -9,6 +9,8 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import java.util.Arrays;
 
 @ControllerAdvice(basePackages = "com.eqchu.project.controller")
 public class ControllerActivity implements ResponseBodyAdvice<Object> {
@@ -27,13 +29,17 @@ public class ControllerActivity implements ResponseBodyAdvice<Object> {
                 HttpMethod.PATCH,HttpMethod.DELETE,HttpMethod.PUT));
         serverHttpResponse.getHeaders().setAccessControlMaxAge(3600);
         serverHttpResponse.getHeaders().setAccessControlAllowHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept"));
+        serverHttpResponse.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
-        Map<String,Object> map = new HashMap<String,Object>();
+        JSONObject ob = new JSONObject();
+
         if(o == null){
-            map.put("data",new HashMap());
+            ob.put("state","fail");
+            ob.put("body","");
         } else {
-            map.put("data",o);
+            ob.put("state","ok");
+            ob.put("body",o);
         }
-        return JSON.toJSONString(map);
+        return ob;
     }
 }

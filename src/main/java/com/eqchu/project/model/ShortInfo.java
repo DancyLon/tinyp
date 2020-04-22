@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class ShortInfo {
     private String infoId;
-    private String date;
+    private String publishDate;
     private String title;
     private String category;
     private String content;
@@ -13,6 +13,15 @@ public class ShortInfo {
     private String region;
     private String name;
     private String phoneNumber;
+    private String modifyDate;
+
+    public String getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(String modifyDate) {
+        this.modifyDate = modifyDate;
+    }
 
     public String getInfoId() {
         return infoId;
@@ -22,12 +31,12 @@ public class ShortInfo {
         this.infoId = infoId;
     }
 
-    public String getDate() {
-        return date;
+    public String getPublishDate() {
+        return publishDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setPublishDate(String publishDate) {
+        this.publishDate = publishDate;
     }
 
     public String getTitle() {
@@ -89,8 +98,8 @@ public class ShortInfo {
     @Override
     public String toString() {
         return "ShortInfo{" +
-                "info='" + infoId + '\'' +
-                ", date='" + date + '\'' +
+                "infoId='" + infoId + '\'' +
+                ", publishDate='" + publishDate + '\'' +
                 ", title='" + title + '\'' +
                 ", category='" + category + '\'' +
                 ", content='" + content + '\'' +
@@ -98,6 +107,7 @@ public class ShortInfo {
                 ", region='" + region + '\'' +
                 ", name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", modifyDate='" + modifyDate + '\'' +
                 '}';
     }
 }

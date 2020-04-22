@@ -6,7 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 @Component
-public class CommonUtls {
+public class CommonUtils {
 
     //获取一个给定位数的验证码，只包含数字
     public static String getNumberVerrify(int i) {
