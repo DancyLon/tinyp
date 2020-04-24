@@ -1,5 +1,6 @@
 package com.eqchu.project.controller;
 
+import com.eqchu.project.model.SiftBody;
 import com.eqchu.project.service.InfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,10 +89,26 @@ public class InfoController {
      * 给出的条件可以是作者、标题、内容、区域
      * @param condition
      * */
-    @RequestMapping(value = "by/condition",method = RequestMethod.GET)
+    @RequestMapping(value = "/by/condition",method = RequestMethod.GET)
     public Object getInfoByCondiiton(@RequestParam String condition){
         try {
-            return service.getInfoByCondition(condition,0,
+            return service.getInfoBySift(new SiftBody(condition),0,
+                    Arrays.asList("infoId","title","region","category",
+                            "content","publishDate"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 按照筛选条件查询发布信息
+     * @param siftBody
+     * */
+    @RequestMapping(value = "/by/sift",method = RequestMethod.POST)
+    public Object getInfoBySift(@RequestBody SiftBody siftBody){
+        try {
+            return service.getInfoBySift(siftBody,0,
                     Arrays.asList("infoId","title","region","category",
                             "content","publishDate"));
         } catch (Exception e) {

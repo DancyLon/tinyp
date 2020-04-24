@@ -8,6 +8,10 @@ import java.util.*;
 @Component
 public class CommonUtils {
 
+    public static boolean isEmptyString(String s){
+        return s == null || "".equals(s.trim());
+    }
+
     //获取一个给定位数的验证码，只包含数字
     public static String getNumberVerrify(int i) {
         StringBuilder sb = new StringBuilder(i);
@@ -27,5 +31,11 @@ public class CommonUtils {
             e.printStackTrace();
         }
         return timeString;
+    }
+
+    public static String addDate(int timeScale, int count, String formate) throws Exception{
+        Calendar ca = Calendar.getInstance();
+        ca.add(timeScale,count);
+        return new SimpleDateFormat(formate).format(ca.getTime());
     }
 }

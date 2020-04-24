@@ -1,6 +1,8 @@
 package com.eqchu.project.service;
 
+import com.eqchu.project.enums.SiftDateRange;
 import com.eqchu.project.model.ShortInfo;
+import com.eqchu.project.model.SiftBody;
 import com.eqchu.project.utils.CommonUtils;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -53,26 +55,46 @@ public class InfoService {
         return list;
     }
 
-    public void getInfoByQueryContidion(String infoId) {
-
-    }
-
     public ShortInfo getInfoById(String infoId) throws Exception {
        return mongo.findOne(Query.query(Criteria.where("infoId").is(infoId)),
                 ShortInfo.class,"short_info");
     }
 
-    public List<Document> getInfoByCondition(String condition,int count,List<String> columnList) {
+    public List<Document> getInfoBySift(SiftBody siftBody, int count, List<String> columnList) throws Exception {
         Query query = new Query();
-        Criteria criteria = new Criteria();
-        //condition
-        criteria.orOperator(
-                Criteria.where("name").regex(condition),
-                Criteria.where("title").regex(condition),
-                Criteria.where("content").regex(condition),
-                Criteria.where("region").regex(condition),
-                 Criteria.where("category").regex(condition));
-        query.addCriteria(criteria);
+        //sift
+        if (!CommonUtils.isEmptyString(siftBody.getCondition())) {
+            String condition = siftBody.getCondition();
+            Criteria criteria = new Criteria();
+            criteria.orOperator(
+                    Criteria.where("name").regex(condition),
+                    Criteria.where("title").regex(condition),
+                    Criteria.where("content").regex(condition),
+                    Criteria.where("region").regex(condition),
+                    Criteria.where("category").regex(condition));
+            query.addCriteria(criteria);
+        }
+        if (!CommonUtils.isEmptyString(siftBody.getCategory())) {
+            Criteria criteria = Criteria.where("category").is(siftBody.getCategory());
+            query.addCriteria(criteria);
+        }
+        if (!CommonUtils.isEmptyString(siftBody.getRegion())) {
+            Criteria criteria = Criteria.where("region").is(siftBody.getRegion());
+            query.addCriteria(criteria);
+        }
+        if (siftBody.getDataRange()!=0) {
+            String date = null;
+            if(siftBody.getDataRange()==1)
+                date = CommonUtils.getNowTimeFormat("yyyy-MMd-dd")+" 00:00:00";
+            else {
+                SiftDateRange dateRange = SiftDateRange.getOneByValue(siftBody.getDataRange());
+                int timeScale = dateRange.getTimeScale();
+                int c = dateRange.getCount();
+                date = CommonUtils.addDate(timeScale,-c,"yyyy-MM-dd HH:mm:ss");
+            }
+            Criteria criteria = Criteria.where("publishDate").gte(date);
+            query.addCriteria(criteria);
+        }
 
         //column
         query.fields().exclude("_id");
@@ -93,4 +115,5 @@ public class InfoService {
         List<Document> list = mongo.find(query,Document.class,"short_info");
         return list;
     }
+
 }
