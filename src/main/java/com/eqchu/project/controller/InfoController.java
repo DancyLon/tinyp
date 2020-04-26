@@ -5,6 +5,7 @@ import com.eqchu.project.service.InfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import com.eqchu.project.model.ShortInfo;
@@ -13,6 +14,7 @@ import java.util.*;
 @Component
 @RestController
 @RequestMapping("/filter/info")
+@Scope("prototype")
 public class InfoController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
