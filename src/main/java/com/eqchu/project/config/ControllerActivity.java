@@ -22,15 +22,6 @@ public class ControllerActivity implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         //解决跨域问题
-        serverHttpResponse.getHeaders().setAccessControlAllowOrigin("*");
-        serverHttpResponse.getHeaders().setAccessControlAllowCredentials(true);
-        serverHttpResponse.getHeaders().setAccessControlAllowMethods(
-                Arrays.asList(HttpMethod.POST,HttpMethod.GET,
-                HttpMethod.PATCH,HttpMethod.DELETE,HttpMethod.PUT));
-        serverHttpResponse.getHeaders().setAccessControlMaxAge(3600);
-        serverHttpResponse.getHeaders().setAccessControlAllowHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept"));
-        serverHttpResponse.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-
         JSONObject ob = new JSONObject();
 
         if(o == null){

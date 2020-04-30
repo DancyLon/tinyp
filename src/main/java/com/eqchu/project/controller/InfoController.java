@@ -96,7 +96,7 @@ public class InfoController {
         try {
             return service.getInfoBySift(new SiftBody(condition),0,
                     Arrays.asList("infoId","title","region","category",
-                            "content","publishDate"));
+                            "content","publishDate","name"));
         } catch (Exception e) {
             e.printStackTrace();
         }
