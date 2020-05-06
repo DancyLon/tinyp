@@ -35,15 +35,10 @@ public class LoginController {
     @RequestMapping(value = "/by/phoneNumber",method = RequestMethod.GET)
     public Object loginByPhoneNumber(@RequestParam String phoneNumber,
                                      @RequestParam String verify){
-        Map<String,String> map = new HashMap();
         if (service.loginByPhoneNumber(phoneNumber,verify)) {
-            map.put("status","ok");
-            map.put("msg","登陆成功");
-        } else{
-            map.put("status","fail");
-            map.put("msg","登陆失败，验证码不正确");
+            return true;
         }
-        return map;
+        return null;
     }
 
     @RequestMapping(value = "/test")
