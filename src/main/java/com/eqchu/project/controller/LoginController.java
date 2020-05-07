@@ -1,5 +1,4 @@
 package com.eqchu.project.controller;
-import java.util.*;
 import com.eqchu.project.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,8 +22,7 @@ public class LoginController {
     @RequestMapping(value = "/msg/verify",method = RequestMethod.GET)
     public Object getMsgVerify(
             @RequestParam String phoneNumber){
-        String re = service.getMsgVerify(phoneNumber);
-        return re;
+        return service.getMsgVerify(phoneNumber);
     }
 
     /**s

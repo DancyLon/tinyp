@@ -23,7 +23,7 @@ public class LoginService {
     private MongoTemplate mongo;
 
     //缓存客户信息
-    private Map<String,Map<String,Object>> userInfo = new HashMap();
+    public static Map<String,Map<String,Object>> userInfo = new HashMap();
 
     //获取短信验证码
     public String getMsgVerify(String phoneNumb) {

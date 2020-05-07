@@ -1,11 +1,18 @@
-package com.eqchu.project.filter;
+package com.eqchu.project.interceptor;
 
+import com.alibaba.fastjson.JSONObject;
+import com.eqchu.project.enums.HttpError;
 import com.eqchu.project.utils.CodeUtils;
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
-import javax.servlet.http.*;
+import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+/**所有接口拦截器，用于接口鉴权，处理跨域问题*/
+@Component
 public class ControllerInterceptor implements HandlerInterceptor {
 
     private Logger log = LoggerFactory.getLogger(ControllerInterceptor.class);
@@ -21,17 +28,24 @@ public class ControllerInterceptor implements HandlerInterceptor {
             res.setStatus(200);
             return true;
         }
+        JSONObject json = new JSONObject();
+        json.put("state","failed");
+        json.put("body",new HashMap());
         //校验时间戳
         Object timestamp = req.getHeader("Timestamp");
         if(timestamp == null){
             log.info("===== There is no Timestamp =====");
-            res.setStatus(452);
+            res.setStatus(HttpError.EXPIRE.getErrorCode());
+            json.put("msg",HttpError.EXPIRE.getErrorMsg());
+            res.getWriter().write(json.toJSONString());
             return false;
         }else{
             long tt = Long.parseLong(timestamp.toString());
             if(System.currentTimeMillis() - tt > 1000*3600){//超时时间一小时
                 log.info("===== 接口过期 =====");
-                res.setStatus(452);
+                res.setStatus(HttpError.EXPIRE.getErrorCode());
+                json.put("msg",HttpError.EXPIRE.getErrorMsg());
+                res.getWriter().write(json.toJSONString());
                 return false;
             }
         }
@@ -40,24 +54,20 @@ public class ControllerInterceptor implements HandlerInterceptor {
         String auth = req.getHeader("Authorization");
         if (auth == null || "".equals(auth)) {
             log.info("===== There is no Authorization =====");
-            res.setStatus(401);
+            res.setStatus(HttpError.AUTH_FAILED.getErrorCode());
+            json.put("msg",HttpError.AUTH_FAILED.getErrorMsg());
+            res.getWriter().write(json.toJSONString());
             return false;
         }else{
             log.info("===== This is the Authorization "+auth+"=====");
             if(!auth.equals(CodeUtils.encodeAuthByTimestamp(timestamp))){
                 log.info("=====鉴权失败=====");
-                res.setStatus(401);
+                res.setStatus(HttpError.AUTH_FAILED.getErrorCode());
+                json.put("msg",HttpError.AUTH_FAILED.getErrorMsg());
+                res.getWriter().write(json.toJSONString());
                 return false;
             }
         }
         return true;
-    }
-
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        log.info("postHandle");
-    }
-
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        log.info("afterCompletion");
     }
 }

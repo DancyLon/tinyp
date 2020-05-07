@@ -3,24 +3,22 @@ package com.eqchu.project.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.eqchu.project.filter.ControllerInterceptor;
+import com.eqchu.project.interceptor.ControllerInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.*;
 
 @Configuration
-public class WebConfig extends WebMvcConfigurationSupport {
+public class WebConfig implements WebMvcConfigurer {
 
     public void addInterceptors(InterceptorRegistry registry) {
         // 多个拦截器组成一个拦截器链
         // addPathPatterns 用于添加拦截规则，/**表示拦截所有请求
         // excludePathPatterns 用户排除拦截
-        registry.addInterceptor(new ControllerInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/stuInfo/getAllStuInfoA","/account/register");
-        super.addInterceptors(registry);
+        registry.addInterceptor(new ControllerInterceptor()).addPathPatterns("/**");
     }
 
     @Override
