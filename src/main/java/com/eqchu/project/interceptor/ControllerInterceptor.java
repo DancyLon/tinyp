@@ -42,7 +42,7 @@ public class ControllerInterceptor implements HandlerInterceptor {
         }else{
             long tt = Long.parseLong(timestamp.toString());
             if(System.currentTimeMillis() - tt > 1000*3600){//超时时间一小时
-                log.info("===== 接口过期 =====");
+                log.info("===== interface expire =====");
                 res.setStatus(HttpError.EXPIRE.getErrorCode());
                 json.put("msg",HttpError.EXPIRE.getErrorMsg());
                 res.getWriter().write(json.toJSONString());
@@ -61,7 +61,7 @@ public class ControllerInterceptor implements HandlerInterceptor {
         }else{
             log.info("===== This is the Authorization "+auth+"=====");
             if(!auth.equals(CodeUtils.encodeAuthByTimestamp(timestamp))){
-                log.info("=====鉴权失败=====");
+                log.info("=====Authorizatino failed=====");
                 res.setStatus(HttpError.AUTH_FAILED.getErrorCode());
                 json.put("msg",HttpError.AUTH_FAILED.getErrorMsg());
                 res.getWriter().write(json.toJSONString());

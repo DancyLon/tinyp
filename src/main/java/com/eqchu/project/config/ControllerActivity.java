@@ -9,8 +9,7 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-
-import java.util.HashMap;
+import java.util.*;
 
 @ControllerAdvice(basePackages = "com.eqchu.project.controller")
 public class ControllerActivity implements ResponseBodyAdvice<Object> {
