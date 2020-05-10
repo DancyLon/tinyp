@@ -2,6 +2,7 @@ package com.eqchu.project.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.eqchu.project.enums.HttpError;
+import com.eqchu.project.model.APIResponse;
 import com.eqchu.project.service.LoginService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,9 +22,9 @@ public class VerifyInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
         String phoneNumber =  req.getParameter("phoneNumber");
         Map<String,Object> map = null;
-        JSONObject json = new JSONObject();
-        json.put("state","failed");
-        json.put("body",new HashMap());
+        APIResponse json = new APIResponse();
+        json.setState("failed");
+        json.setBody(new HashMap());
         if(phoneNumber!=null){
             map = LoginService.userInfo.get(phoneNumber);
             if(map != null){
@@ -31,7 +32,7 @@ public class VerifyInterceptor implements HandlerInterceptor {
                 if (o != null) {
                     if (System.currentTimeMillis() - Long.parseLong(o.toString()) < 1000*60) {
                         res.setStatus(HttpError.VERIFY_FREQUENLY.getErrorCode());
-                        json.put("msg",HttpError.VERIFY_FREQUENLY.getErrorMsg());
+                        json.setMsg(HttpError.VERIFY_FREQUENLY.getErrorMsg());
                         res.getWriter().write(json.toJSONString());
                         return false;
                     }

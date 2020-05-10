@@ -1,15 +1,16 @@
 package com.eqchu.project.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
 import com.eqchu.project.enums.HttpError;
+import com.eqchu.project.model.APIResponse;
 import com.eqchu.project.utils.CodeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import java.util.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**所有接口拦截器，用于接口鉴权，处理跨域问题*/
 @Component
@@ -28,15 +29,15 @@ public class ControllerInterceptor implements HandlerInterceptor {
             res.setStatus(200);
             return true;
         }
-        JSONObject json = new JSONObject();
-        json.put("state","failed");
-        json.put("body",new HashMap());
+        APIResponse json = new APIResponse();
+        json.setState("failed");
+        json.setBody(new HashMap());
         //校验时间戳
         Object timestamp = req.getHeader("Timestamp");
         if(timestamp == null){
             log.info("===== There is no Timestamp =====");
             res.setStatus(HttpError.EXPIRE.getErrorCode());
-            json.put("msg",HttpError.EXPIRE.getErrorMsg());
+            json.setMsg(HttpError.EXPIRE.getErrorMsg());
             res.getWriter().write(json.toJSONString());
             return false;
         }else{
@@ -44,7 +45,7 @@ public class ControllerInterceptor implements HandlerInterceptor {
             if(System.currentTimeMillis() - tt > 1000*3600){//超时时间一小时
                 log.info("===== interface expire =====");
                 res.setStatus(HttpError.EXPIRE.getErrorCode());
-                json.put("msg",HttpError.EXPIRE.getErrorMsg());
+                json.setMsg(HttpError.EXPIRE.getErrorMsg());
                 res.getWriter().write(json.toJSONString());
                 return false;
             }
@@ -55,7 +56,7 @@ public class ControllerInterceptor implements HandlerInterceptor {
         if (auth == null || "".equals(auth)) {
             log.info("===== There is no Authorization =====");
             res.setStatus(HttpError.AUTH_FAILED.getErrorCode());
-            json.put("msg",HttpError.AUTH_FAILED.getErrorMsg());
+            json.setMsg(HttpError.AUTH_FAILED.getErrorMsg());
             res.getWriter().write(json.toJSONString());
             return false;
         }else{
@@ -63,7 +64,7 @@ public class ControllerInterceptor implements HandlerInterceptor {
             if(!auth.equals(CodeUtils.encodeAuthByTimestamp(timestamp))){
                 log.info("=====Authorizatino failed=====");
                 res.setStatus(HttpError.AUTH_FAILED.getErrorCode());
-                json.put("msg",HttpError.AUTH_FAILED.getErrorMsg());
+                json.setMsg(HttpError.AUTH_FAILED.getErrorMsg());
                 res.getWriter().write(json.toJSONString());
                 return false;
             }

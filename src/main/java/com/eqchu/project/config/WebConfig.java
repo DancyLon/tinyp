@@ -4,6 +4,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.eqchu.project.interceptor.ControllerInterceptor;
+import com.eqchu.project.interceptor.VerifyInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -18,7 +19,10 @@ public class WebConfig implements WebMvcConfigurer {
         // 多个拦截器组成一个拦截器链
         // addPathPatterns 用于添加拦截规则，/**表示拦截所有请求
         // excludePathPatterns 用户排除拦截
-        registry.addInterceptor(new ControllerInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new ControllerInterceptor())
+                .addPathPatterns("/**").order(1);
+        registry.addInterceptor(new VerifyInterceptor())
+                .addPathPatterns("/msg/verify").order(2);
     }
 
     @Override

@@ -13,6 +13,16 @@ public enum HttpError {
     final private int errorCode;
     final private String errorMsg;
 
+    public static String getMsgByCode(int code){
+        for (HttpError e:HttpError.values()
+             ) {
+            if (e.errorCode == code) {
+                return e.getErrorMsg();
+            }
+        }
+        return null;
+    }
+
     public int getErrorCode() {
         return errorCode;
     }
