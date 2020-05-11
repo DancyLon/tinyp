@@ -13,6 +13,7 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import java.util.*;
 
@@ -35,6 +36,7 @@ public class ControllerActivity implements ResponseBodyAdvice<Object> {
 
     /**处理自定义异常*/
     @ExceptionHandler(value = ServerException.class)
+    @ResponseBody
     public APIResponse handleServerException(ServerException e){
         logger.error("ServerException：",e);
         APIResponse res = new APIResponse()

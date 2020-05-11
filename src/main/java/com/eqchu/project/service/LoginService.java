@@ -26,28 +26,24 @@ public class LoginService {
     public static Map<String,Map<String,Object>> userInfo = new HashMap();
 
     //获取短信验证码
-    public String getMsgVerify(String phoneNumb) {
+    public String getMsgVerify(String phoneNumb) throws Exception{
         String randomVerify = CommonUtils.getNumberVerrify(6);
         logger.info("random verify:"+randomVerify);
         Map<String,Object> paras = null;
         String response = null;
         String url = null;
-        try {
-            url = TencentUtils.getMsgVerifyURL(phoneNumb,randomVerify);
-            logger.info("url="+url);
-            response = http.getMsgVerify(url);
-            if ("ok" == response) {
-                Map<String,Object> map = null;
-                if (userInfo.get(phoneNumb) == null) {
-                    map = new HashMap();
-                    userInfo.put(phoneNumb,map);
-                }else{
-                    map = userInfo.get(phoneNumb);
-                }
-                map.put("verify",randomVerify);
+        url = TencentUtils.getMsgVerifyURL(phoneNumb,randomVerify);
+        logger.info("url="+url);
+        response = http.getMsgVerify(url);
+        if ("ok" == response) {
+            Map<String,Object> map = null;
+            if (userInfo.get(phoneNumb) == null) {
+                map = new HashMap();
+                userInfo.put(phoneNumb,map);
+            }else{
+                map = userInfo.get(phoneNumb);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            map.put("verify",randomVerify);
         }
         return response;
     }
