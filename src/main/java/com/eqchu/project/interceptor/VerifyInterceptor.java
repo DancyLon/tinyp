@@ -1,14 +1,14 @@
 package com.eqchu.project.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
 import com.eqchu.project.enums.HttpError;
 import com.eqchu.project.model.APIResponse;
 import com.eqchu.project.service.LoginService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 短信验证码接口拦截器，
