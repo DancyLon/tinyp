@@ -8,7 +8,9 @@ public enum HttpError {
     EXPIRE(452,"请求过期"),
     FREQUENLY(453,"请求过于频繁"),
     VERIFY_FREQUENLY(454,"验证码请求过于频繁"),
-    VERIFY_LIMIT(455,"验证码次数限制，每日100次已用完");
+    VERIFY_LIMIT(455,"验证码次数限制，每日100次已用完"),
+    VERIFY_ERROR(456,"短信验证码接口异常"),
+    VERIFY_NOT_CORRECT(457,"验证码不正确");
 
     final private int errorCode;
     final private String errorMsg;

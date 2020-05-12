@@ -1,6 +1,8 @@
 package com.eqchu.project.service;
 
+import com.eqchu.project.enums.HttpError;
 import com.eqchu.project.httpRequest.Http;
+import com.eqchu.project.model.ServerException;
 import com.eqchu.project.utils.CommonUtils;
 import com.eqchu.project.utils.TencentUtils;
 import org.bson.Document;
@@ -49,10 +51,12 @@ public class LoginService {
     }
 
     //手机号快速登陆
-    public boolean loginByPhoneNumber(String phoneNumber, String verify) {
+    public boolean loginByPhoneNumber(String phoneNumber, String verify) throws Exception{
         if (userInfo.get(phoneNumber) == null || userInfo.get(phoneNumber).get("verify") == null
             || !userInfo.get(phoneNumber).get("verify").equals(verify)) {
-            return false;
+            logger.error("=====验证码不正确=====");
+            throw new ServerException(HttpError.VERIFY_NOT_CORRECT.getErrorCode(),
+                    HttpError.VERIFY_NOT_CORRECT.getErrorMsg());
         }else{
             Query query = new Query(Criteria.where("phone_number").is(phoneNumber));
             Document one = mongo.findOne(query, Document.class,"web_users");

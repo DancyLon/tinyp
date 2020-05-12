@@ -47,4 +47,12 @@ public class ServerException extends RuntimeException{
     public void setException(Exception exception) {
         this.exception = exception;
     }
+
+    @Override
+    public String toString() {
+        return "ServerException{" +
+                "errorCode=" + errorCode +
+                ", msg='" + msg==null?"":msg + '\'' +
+                '}';
+    }
 }

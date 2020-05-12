@@ -21,7 +21,7 @@ public class LoginController {
      * */
     @RequestMapping(value = "/msg/verify",method = RequestMethod.GET)
     public Object getMsgVerify(
-            @RequestParam String phoneNumber){
+            @RequestParam String phoneNumber) throws Exception{
         return service.getMsgVerify(phoneNumber);
     }
 
@@ -32,15 +32,12 @@ public class LoginController {
      * */
     @RequestMapping(value = "/by/phoneNumber",method = RequestMethod.GET)
     public Object loginByPhoneNumber(@RequestParam String phoneNumber,
-                                     @RequestParam String verify){
-        if (service.loginByPhoneNumber(phoneNumber,verify)) {
-            return true;
-        }
-        return null;
+                                     @RequestParam String verify) throws Exception{
+       return service.loginByPhoneNumber(phoneNumber,verify);
     }
 
     @RequestMapping(value = "/test")
-    public Object test(){
+    public Object test() throws Exception{
         return "test";
     }
 }

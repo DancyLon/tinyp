@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @ControllerAdvice(basePackages = "com.eqchu.project.controller")
@@ -24,28 +26,28 @@ public class ControllerActivity implements ResponseBodyAdvice<Object> {
 
     /**处理任何异常*/
     @ExceptionHandler
-    public APIResponse handleException(Exception e){
+    @ResponseBody
+    public Object handleException(Exception e,HttpServletResponse resonse){
         logger.error("exception：",e);
         APIResponse res = new APIResponse()
                 .setState("failed")
                 .setBody(new HashMap())
                 .setErrorCode(500)
                 .setMsg(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-        return res;
+        resonse.setStatus(500);
+        return res.toJSONObject();
     }
 
     /**处理自定义异常*/
     @ExceptionHandler(value = ServerException.class)
     @ResponseBody
-    public APIResponse handleServerException(ServerException e){
-        logger.error("ServerException：",e);
+    public Object handleServerException(ServerException e, HttpServletResponse resonse){
+        logger.error("ServerException："+e.toString());
         APIResponse res = new APIResponse()
                 .setState("failed")
                 .setBody(new HashMap());
 
         int errorCode = e.getErrorCode();
-        res.setErrorCode(errorCode);
-
         String msg = HttpError.getMsgByCode(errorCode);
         if (msg == null) {
             HttpStatus status = HttpStatus.resolve(errorCode);
@@ -56,7 +58,8 @@ public class ControllerActivity implements ResponseBodyAdvice<Object> {
             }
         }
         res.setMsg(msg);
-        return res;
+        resonse.setStatus(errorCode);
+        return res.toJSONObject();
     }
 
     @Override
