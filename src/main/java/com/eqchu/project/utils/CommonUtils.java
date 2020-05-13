@@ -15,7 +15,7 @@ public class CommonUtils {
     //获取一个给定位数的验证码，只包含数字
     public static String getNumberVerrify(int i) {
         StringBuilder sb = new StringBuilder(i);
-        while(i-- > 0){
+        while(i--> 0){
             sb.append((int)Math.floor(Math.random()*10));
         }
         return sb.toString();
@@ -27,6 +27,17 @@ public class CommonUtils {
             Date now = new Date();
             DateFormat sdf = new SimpleDateFormat(format);
             timeString  = sdf.format(now);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return timeString;
+    }
+
+    public static String getTimeFormatByMillis(long timestamp,String format){
+        String timeString = null;
+        try {
+            DateFormat sdf = new SimpleDateFormat(format);
+            timeString  = sdf.format(timestamp);
         } catch (Exception e) {
             e.printStackTrace();
         }
