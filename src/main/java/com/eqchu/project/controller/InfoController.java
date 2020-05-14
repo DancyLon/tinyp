@@ -13,7 +13,7 @@ import java.util.*;
 
 @Component
 @RestController
-@RequestMapping("/filter/info")
+@RequestMapping("/info")
 @Scope("prototype")
 public class InfoController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -23,7 +23,7 @@ public class InfoController {
      * 新建发布信息
      * @param info {@link ShortInfo}实体类
      * */
-    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    @RequestMapping(value = "/create/filter",method = RequestMethod.POST)
     public Object createShortInfo(@RequestBody ShortInfo info){
         try {
             ShortInfo i = service.createShortInfo(info);

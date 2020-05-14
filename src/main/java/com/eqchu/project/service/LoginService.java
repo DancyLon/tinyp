@@ -88,23 +88,55 @@ public class LoginService {
                     HttpError.VERIFY_ERROR.getErrorMsg());
 
         long nowTimestamp = System.currentTimeMillis();
+        String token = CodeUtils.getToken(phoneNumber,nowTimestamp);
+        userMap.put("status",1);
+        userMap.put("loginTime",nowTimestamp);
+        userMap.put("token",token);
+        userMap.put("logoutTime","");
+
         Query query = new Query(Criteria.where("phone_number").is(phoneNumber));
         Document one = mongo.findOne(query, Document.class,"web_users");
         String nowString = CommonUtils.getTimeFormatByMillis(nowTimestamp,"yyyy-MM-dd HH:mm:ss");
         if (one == null) {
             one = new Document();
+            one.putAll(userMap);
             one.append("phone_number",phoneNumber).append("join_time",nowString)
-                .append("update_time",nowString);
+                    .append("update_time",nowString);
             mongo.insert(one,"web_users");
         }else{
             Update update = new Update();
-            update.set("update_time",nowString);
+            update.set("update_time",nowString).set("status",1);
             mongo.updateFirst(query,update,"web_users");
         }
 
-        userMap.put("status",1);
-        userMap.put("loginTime",nowTimestamp);
-        String tokon = CodeUtils.getToken(phoneNumber,nowTimestamp);
-        return tokon;
+        return token;
+    }
+
+    public Object logout(String phoneNumber, String token) throws Exception{
+        if(userInfo.get(phoneNumber)==null
+                || userInfo.get(phoneNumber).get("token")==null
+                || !userInfo.get(phoneNumber).get("token").equals(token)){
+            throw new ServerException(HttpError.LOGINOUT_ERROR.getErrorCode(),
+                    HttpError.LOGINOUT_ERROR.getErrorMsg());
+        }
+        long timestamp = System.currentTimeMillis();
+        userInfo.get(phoneNumber).put("statue",0);
+        userInfo.get(phoneNumber).put("logoutTime",timestamp);
+
+        Query query = new Query(Criteria.where("phone_number").is(phoneNumber));
+        Document one = mongo.findOne(query, Document.class,"web_users");
+        String nowString = CommonUtils.getTimeFormatByMillis(timestamp,"yyyy-MM-dd HH:mm:ss");
+        if (one == null) {
+            one = new Document();
+            one.putAll(userInfo.get(phoneNumber));
+            one.append("phone_number",phoneNumber).append("join_time",nowString)
+                    .append("update_time",nowString);
+            mongo.insert(one,"web_users");
+        }else{
+            Update update = new Update();
+            update.set("update_time",nowString).set("status",0).set("logoutTime",timestamp);
+            mongo.updateFirst(query,update,"web_users");
+        }
+        return true;
     }
 }

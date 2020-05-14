@@ -2,14 +2,11 @@ package com.eqchu.project.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.crypto.*;
+import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
-public class CodeUtils<Logge> {
+public class CodeUtils {
     private static Logger logger = LoggerFactory.getLogger("CodeUtils");
 
     public static String encodeAuthByTimestamp(Object timestamp) {
@@ -25,7 +22,7 @@ public class CodeUtils<Logge> {
             Mac mac = Mac.getInstance("HmacSHA256");
             SecretKeySpec ss = new SecretKeySpec(key.getBytes("UTF-8"),mac.getAlgorithm());
             mac.init(ss);
-            byte[] res = mac.doFinal(s.getBytes("UTF-8"));
+            byte[] res = mac.doFinal(value.getBytes("UTF-8"));
             s = DatatypeConverter.printBase64Binary(res);
             logger.info("=====final mac byte String "+s+" =====");
         } catch(Exception e){

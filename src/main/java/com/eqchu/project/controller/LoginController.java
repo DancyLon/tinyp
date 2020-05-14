@@ -36,7 +36,18 @@ public class LoginController {
        return service.loginByPhoneNumber(phoneNumber,verify);
     }
 
-    @RequestMapping(value = "/test")
+    /**
+     * 注销的方法
+     * @param phoneNumber 手机号
+     * @param token 用户token
+     * */
+    @RequestMapping(value = "/out/filter",method = RequestMethod.GET)
+    public Object logout(@RequestParam String phoneNumber,
+                           @RequestParam String token) throws Exception{
+        return service.logout(phoneNumber,token);
+    }
+
+    @RequestMapping(value = "/test/filter",method = RequestMethod.GET)
     public Object test() throws Exception{
         return "test";
     }
