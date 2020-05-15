@@ -12,7 +12,8 @@ public enum HttpError {
     VERIFY_ERROR(456,"短信验证码接口异常,请重新发送"),
     VERIFY_NOT_CORRECT(457,"验证码不正确"),
     VERIFY_OUTTIME(458,"验证码超时，请重新发送"),
-    LOGINOUT_ERROR(459,"注销失败");
+    LOGINOUT_ERROR(459,"注销失败"),
+    NO_TOKEN(460,"该用户没有登陆，请先登陆");
 
     final private int errorCode;
     final private String errorMsg;

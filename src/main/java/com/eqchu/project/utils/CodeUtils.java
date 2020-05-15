@@ -16,7 +16,7 @@ public class CodeUtils {
     }
 
     public static String sha256EncodeByKeyAndValue(String key,String value){
-        logger.info("=====sha256 encode key:"+key+" and value:"+value+" =====");
+//        logger.info("=====sha256 encode key:"+key+" and value:"+value+" =====");
         String s = null;
         try {
             Mac mac = Mac.getInstance("HmacSHA256");
@@ -24,7 +24,7 @@ public class CodeUtils {
             mac.init(ss);
             byte[] res = mac.doFinal(value.getBytes("UTF-8"));
             s = DatatypeConverter.printBase64Binary(res);
-            logger.info("=====final mac byte String "+s+" =====");
+//            logger.info("=====final mac byte String "+s+" =====");
         } catch(Exception e){
             e.printStackTrace();
         }

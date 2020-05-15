@@ -23,7 +23,7 @@ public class InfoController {
      * 新建发布信息
      * @param info {@link ShortInfo}实体类
      * */
-    @RequestMapping(value = "/create/filter",method = RequestMethod.POST)
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Object createShortInfo(@RequestBody ShortInfo info){
         try {
             ShortInfo i = service.createShortInfo(info);

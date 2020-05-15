@@ -41,13 +41,13 @@ public class LoginController {
      * @param phoneNumber 手机号
      * @param token 用户token
      * */
-    @RequestMapping(value = "/out/filter",method = RequestMethod.GET)
+    @RequestMapping(value = "/out",method = RequestMethod.GET)
     public Object logout(@RequestParam String phoneNumber,
                            @RequestParam String token) throws Exception{
         return service.logout(phoneNumber,token);
     }
 
-    @RequestMapping(value = "/test/filter",method = RequestMethod.GET)
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
     public Object test() throws Exception{
         return "test";
     }

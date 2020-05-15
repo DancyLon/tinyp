@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
@@ -19,7 +18,7 @@ public class ControllerInterceptor implements HandlerInterceptor {
     private Logger log = LoggerFactory.getLogger(ControllerInterceptor.class);
 
     public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object o) throws Exception {
-        log.info("---------------------开始进入请求地址拦截----------------------------");
+        log.info("===== controller interceptor =====");
         //-----跨域问题-----
         res.addHeader("Access-Control-Allow-Credentials", "true");
         res.addHeader("Access-Control-Allow-Origin", "*");

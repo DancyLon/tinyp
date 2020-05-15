@@ -19,9 +19,11 @@ public class WebConfig implements WebMvcConfigurer {
         // addPathPatterns 用于添加拦截规则，/**表示拦截所有请求
         // excludePathPatterns 用户排除拦截
         registry.addInterceptor(new ControllerInterceptor())
-                .addPathPatterns("/eqchu/*").order(1);
+                .addPathPatterns("/**").order(1);
         registry.addInterceptor(new TokenInterceptor())
-                .addPathPatterns("/eqchu/*/filter").order(2);
+                .addPathPatterns("/**/login/out",
+                        "/**/info/create",
+                        "/**/login/test").order(2);
     }
 
     @Override
