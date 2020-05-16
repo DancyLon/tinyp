@@ -14,6 +14,15 @@ public class ShortInfo {
     private String name;
     private String phoneNumber;
     private String modifyDate;
+    private String userNumber;
+
+    public String getUserNumber() {
+        return userNumber;
+    }
+
+    public void setUserNumber(String userNumber) {
+        this.userNumber = userNumber;
+    }
 
     public String getModifyDate() {
         return modifyDate;
@@ -108,6 +117,7 @@ public class ShortInfo {
                 ", name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", modifyDate='" + modifyDate + '\'' +
+                ", userNumber='"+userNumber+'\'' +
                 '}';
     }
 }

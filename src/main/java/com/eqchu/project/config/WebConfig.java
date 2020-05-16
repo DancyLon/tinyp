@@ -23,7 +23,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new TokenInterceptor())
                 .addPathPatterns("/**/login/out",
                         "/**/info/create",
-                        "/**/login/test").order(2);
+                        "/**/login/test",
+                        "/**/info/delete").order(2);
     }
 
     @Override

@@ -19,6 +19,12 @@ public class InfoController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private InfoService service;
+
+    @RequestMapping(value = "/delete",method = RequestMethod.GET)
+    public Object deleteInfo(@RequestParam String infoId) throws Exception{
+        return service.deleteInfoById(infoId);
+    }
+
     /**
      * 新建发布信息
      * @param info {@link ShortInfo}实体类

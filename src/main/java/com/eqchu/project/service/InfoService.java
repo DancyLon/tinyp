@@ -116,4 +116,9 @@ public class InfoService {
         return list;
     }
 
+    public Object deleteInfoById(String infoId) throws Exception{
+       ShortInfo info =  mongo.findAndRemove(Query.query(Criteria.where("infoId").is(infoId)),ShortInfo.class,
+                "short_info");
+       return info!=null;
+    }
 }
